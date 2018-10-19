@@ -1,0 +1,224 @@
+Main = add_node!; add_loop!; add_edge!; add_input!; Loop!; Edge!; remove_node_counter
+Loop = pick_loop; [keep_loop, delete_loop]
+Edge = pick_edge; [keep_edge, delete_edge]
+
+add_node
+(
+  x : int
+)
+[
+  (n0(R), "Nodes":x)
+  |
+]
+=>
+[
+  (n0(R), "Nodes":x - 1)
+  (n1, "Node":0:-1000)
+  |
+]
+interface = {
+  n0
+}
+where x > 0
+
+add_loop
+(
+  x, y : int
+)
+[
+  (n0, "Node":x:y)
+  |
+]
+=>
+[
+  (n0, "Node":x:y)
+  |
+  (e0, n0, n0, "H":0#grey)
+  (e1, n0, n0, "T":0#grey)
+]
+interface = {
+  n0
+}
+where not edge(n0, n0)
+
+add_edge
+(
+  w, x, y, z : int
+)
+[
+  (n0, "Node":w:x)
+  (n1, "Node":y:z)
+  |
+]
+=>
+[
+  (n0, "Node":w:x)
+  (n1, "Node":y:z)
+  |
+  (e0, n0, n1, "H":0#grey)
+  (e1, n0, n1, "T":0#grey)
+]
+interface = {
+  n0, n1
+}
+where not edge(n0, n1)
+
+add_input
+(
+  x,y,z : int
+)
+[
+  (n0, "Node":x:y)
+  (n1, "Input":z)
+  |
+]
+=>
+[
+  (n0, "Node":x:y)
+  (n1, "Input":z)
+  |
+  (e0, n0, n1, "H":0#grey)
+  (e1, n0, n1, "T":0#grey)
+]
+interface = {
+  n0, n1
+}
+where not edge(n0, n1)
+
+pick_loop
+(
+  a, b : list
+)
+[
+  (n0, a)
+  |
+  (e0, n0, n0, b#grey)
+]
+=>
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#red)
+]
+interface = {
+  n0
+}
+
+keep_loop
+(
+  a, b : list
+)
+[0.1]
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#red)
+]
+=>
+[
+  (n0, a)
+  |
+  (e0, n0, n0, b)
+]
+interface = {
+  n0
+}
+
+
+delete_loop
+(
+  a, b : list
+)
+[0.9]
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#red)
+]
+=>
+[
+  (n0, a)
+  |
+]
+interface = {
+  n0
+}
+
+
+pick_edge
+(
+  a, b, c : list
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c#grey)
+]
+=>
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#red)
+]
+interface = {
+  n0, n1
+}
+
+keep_edge
+(
+  a, b, c : list
+)
+[0.1]
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#red)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+interface = {
+  n0, n1
+}
+
+
+delete_edge
+(
+  a, b, c : list
+)
+[0.9]
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#red)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+]
+interface = {
+  n0, n1
+}
+
+remove_node_counter
+()
+[
+  (n0(R), "Nodes":0)
+  |
+]
+=>
+[
+  |
+]
+interface = {
+}
