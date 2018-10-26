@@ -1,0 +1,104 @@
+Main = [pickEdge]; [pickNewSource, pickNewTarget]; {mutateSource, mutateTarget}
+
+
+pickEdge
+(
+  a, b, c : list
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+=>
+[
+  (n0(R), a#blue)
+  (n1(R), b#blue)
+  |
+  (e0, n0, n1, c#blue)
+]
+interface = {
+  n0, n1
+}
+
+pickNewSource
+(
+  a : list
+)
+[
+  (n0, "Node":a)
+  |
+]
+=>
+[
+  (n0(R), "Node":a#green)
+  |
+]
+interface = {
+  n0
+}
+
+pickNewTarget
+(
+  a : list
+)
+[
+  (n0, a)
+  |
+]
+=>
+[
+  (n0(R), a#red)
+  |
+]
+interface = {
+  n0
+}
+
+
+mutateSource
+(
+  a, b, c, d : list
+)
+[
+  (n0(R), a#blue)
+  (n1(R), b#blue)
+  (n2(R), c#green)
+  |
+  (e0, n0, n1, d#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  (n2, c)
+  |
+  (e0, n0, n2, d)
+]
+interface = {
+  n0, n1, n2
+}
+
+mutateTarget
+(
+  a, b, c, d : list
+)
+[
+  (n0(R), a#blue)
+  (n1(R), b#blue)
+  (n2(R), c#red)
+  |
+  (e0, n0, n1, d#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  (n2, c)
+  |
+  (e0, n0, n2, d)
+]
+interface = {
+  n0, n1, n2
+}

@@ -31,17 +31,16 @@ t_r_result* train_ridge_regression(dnet* dn, dataset* data){
   gsl_matrix* XXt = gsl_matrix_multiply_transpose_b(X_train, X_train);
 
   gsl_matrix* y_target = data->train_output;
-  gsl_matrix* id = gsl_matrix_alloc(XXt->size1, XXt->size1);
-  gsl_matrix_set_identity(id);
 
   gsl_matrix* y_Xt = gsl_matrix_multiply_transpose_b(y_target, X_train);
 
   gsl_matrix* best_Wout = dn->W_Out;
-  double best_validation = 9999999999999999999999.9;
+  double best_validation = 1000000000000.0;
+  bool first = true;
 
   for(int i = 0; i < betas; i++){
     gsl_matrix* beta_id = gsl_matrix_alloc(XXt->size1, XXt->size1);
-    gsl_matrix_memcpy(beta_id, id);
+    gsl_matrix_set_identity(beta_id);
     gsl_matrix_scale(beta_id, b[i]);
 
     gsl_matrix_add(beta_id, XXt);
@@ -54,18 +53,20 @@ t_r_result* train_ridge_regression(dnet* dn, dataset* data){
 
     gsl_matrix* validation_output = get_output(dn, data->validation_input_sequence, data->validation_input_sequence_length, data->warmups, LINEAR_OUTPUT);
 
-    double score = nmse(validation_output, data->validation_output);
+    double score = nmse(data->validation_output,validation_output);
 
     gsl_matrix_free(validation_output);
 
-    if(score < best_validation){
+    if(score < best_validation || first){
       gsl_matrix_free(best_Wout);
       best_Wout = w_candidate;
       best_validation = score;
+      first = false;
     }
     else{
       gsl_matrix_free(w_candidate);
     }
+
 
     gsl_matrix_free(beta_id);
   }
@@ -76,7 +77,7 @@ t_r_result* train_ridge_regression(dnet* dn, dataset* data){
   gsl_matrix* validation_output = get_output(dn, data->validation_input_sequence, data->validation_input_sequence_length, data->warmups, LINEAR_OUTPUT);
   gsl_matrix* test_output = get_output(dn, data->test_input_sequence, data->test_input_sequence_length, data->warmups, LINEAR_OUTPUT);
 
-  t_r_result* res = make_t_r_result(nmse(train_output, data->train_output), nmse(validation_output, data->validation_output), nmse(test_output, data->test_output));
+  t_r_result* res = make_t_r_result(nmse(data->train_output, train_output), nmse(data->validation_output, validation_output), nmse(data->test_output, test_output));
 
   gsl_matrix_free(train_output);
   gsl_matrix_free(validation_output);
@@ -84,7 +85,6 @@ t_r_result* train_ridge_regression(dnet* dn, dataset* data){
 
   gsl_matrix_free(X_train);
   gsl_matrix_free(XXt);
-  gsl_matrix_free(id);
   gsl_matrix_free(y_Xt);
 
   free(b);

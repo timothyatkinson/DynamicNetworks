@@ -8,7 +8,7 @@ dnet* rand_dnet(int inputs, int nodes, bool global_leak){
   gsl_matrix* W_Internal_H = gsl_matrix_calloc(nodes, nodes);
   gsl_matrix* W_Internal_T = gsl_matrix_calloc(nodes, nodes);
 
-  double h_sparsity = rand_range(0.0001, 1.0);
+  double h_sparsity = rand_range(0.001, 1.0);
   double input_scaling_H = rand_range(-1.0, 1.0);
   double spectral_radius_H = rand_range(-1.0, 1.0);
 
@@ -40,16 +40,17 @@ dnet* rand_dnet(int inputs, int nodes, bool global_leak){
   }
   else{
 
-    double t_sparsity = rand_range(0.0001, 1.0);
+    double t_sparsity = rand_range(0.001, 1.0);
     double input_scaling_T = rand_range(-1.0, 1.0);
     double spectral_radius_T = rand_range(-1.0, 1.0);
+
     double t_center = rand_range(0.0, 1.0);
-    double x = log(t_center) - log(1 - t_center);
+    double x = -log((1/t_center) - 1.0);
 
     for(int i = 0; i < nodes; i++){
       for(int j = 0; j < inputs + 1; j++){
         if(j == inputs){
-          gsl_matrix_set(W_In_T, i, j, x);
+          gsl_matrix_set(W_In_T, i, j, x + gauss());
         }
       }
     }

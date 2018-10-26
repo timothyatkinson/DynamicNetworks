@@ -1,0 +1,116 @@
+Main = [pickEdge]; [weight1, weight2, weight3, weight4]
+
+pickEdge
+(
+  a, b, c : list
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+=>
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#blue)
+]
+interface = {
+  n0, n1
+}
+
+weight1
+(
+  a, b, c : list;
+  x : int
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c:x#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c:x+1)
+]
+interface = {
+  n0, n1
+}
+where x + 1 <= 1000
+
+
+weight2
+(
+  a, b, c : list;
+  x : int
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c:x#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c:x+2)
+]
+interface = {
+  n0, n1
+}
+where x + 2 <= 1000
+
+weight3
+(
+  a, b, c : list;
+  x : int
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c:x#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c:x-1)
+]
+interface = {
+  n0, n1
+}
+where x - 1 >= -1000
+
+
+weight4
+(
+  a, b, c : list;
+  x : int
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c:x#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c:x-2)
+]
+interface = {
+  n0, n1
+}
+where x - 2 >= -1000

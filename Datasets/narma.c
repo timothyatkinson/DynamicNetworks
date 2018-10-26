@@ -10,6 +10,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
 
   double* x_train = malloc((warmup + train_length) * sizeof(double));
   double* y_train = malloc((warmup + train_length) * sizeof(double));
+  double x_train_sum = 0.0;
 
   for(int i = 0; i < warmup + train_length; i++){
     if(i < warmup){
@@ -17,6 +18,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
     }
     else{
       x_train[i] = rand_range(i_min, i_max);
+      x_train_sum += x_train[i];
     }
 
     double yt;
@@ -65,6 +67,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
 
   double* x_validation = malloc((warmup + validation_length) * sizeof(double));
   double* y_validation = malloc((warmup + validation_length) * sizeof(double));
+  double x_validation_sum = 0.0;
 
   for(int i = 0; i < warmup + validation_length; i++){
     if(i < warmup){
@@ -72,6 +75,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
     }
     else{
       x_validation[i] = rand_range(i_min, i_max);
+      x_validation_sum += x_validation[i];
     }
 
     double yt;
@@ -120,6 +124,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
 
   double* x_test = malloc((warmup + test_length) * sizeof(double));
   double* y_test = malloc((warmup + test_length) * sizeof(double));
+  double x_test_sum = 0.0;
 
   for(int i = 0; i < warmup + test_length; i++){
     if(i < warmup){
@@ -127,6 +132,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
     }
     else{
       x_test[i] = rand_range(i_min, i_max);
+      x_test_sum += x_test[i];
     }
 
     double yt;
@@ -175,6 +181,9 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
   data->train_input_sequence = malloc(sizeof(gsl_matrix*) * train_length);
   data->validation_input_sequence = malloc(sizeof(gsl_matrix*) * validation_length);
   data->test_input_sequence = malloc(sizeof(gsl_matrix*) * test_length);
+  double x_train_mean = x_train_sum / (double)train_length;
+  double x_validation_mean = x_validation_sum / (double)validation_length;
+  double x_test_mean = x_test_sum / (double)test_length;
 
   data->train_output = gsl_matrix_calloc(1, train_length);
   for(int i = 0; i < train_length; i++){

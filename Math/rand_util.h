@@ -28,4 +28,7 @@ double bound(double val, double min, double max);
 double gauss(void);
 
 int rand_int(int min, int max);
+
+int binomial(int n, double p);
+
 #endif

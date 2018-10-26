@@ -1,7 +1,7 @@
-INCDIRS=P-GP2/include Math GP2_Programs/random_d_graph Datasets Train
+INCDIRS=P-GP2/include Math Datasets Train
 LIBDIR=P-GP2/lib
-GP2_OBJECTS =
-OBJECTS := Math/*.c Datasets/*.c Train/*.c GP2_Programs/random_d_graph/*.c *.c
+GP2_OBJECTS = mutate_bias mutate_weight mutate_edge mutate_param
+OBJECTS := Math/*.c Datasets/*.c Train/*.c *.c
 CC=gcc
 
 CFLAGS = 	$(foreach var,$(INCDIRS),-I $(var)) $(foreach var,$(GP2_OBJECTS),-I $(var)) -L $(LIBDIR) -O2 -lgp2 -lgsl -lgslcblas -lm -g

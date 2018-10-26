@@ -9,7 +9,7 @@ void print_matrix(const gsl_matrix *m) {
 
 	for (i = 0; i < m->size1; i++) {
 		for (j = 0; j < m->size2; j++) {
-			if(j < 20){
+			if(j < 10){
 				printf("%f\t", gsl_matrix_get(m, i, j));
 			}
 		}
