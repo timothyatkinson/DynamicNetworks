@@ -3,6 +3,7 @@
 #include "graphStacks.h"
 #include "parser.h"
 #include "morphism.h"
+#include "common.h"
 
 bool matchmutate_weight_weight1(Morphism *morphism);
 

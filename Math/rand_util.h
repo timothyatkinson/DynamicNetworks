@@ -24,10 +24,9 @@ double rand_range(double min, double max);
 */
 bool rand_bool(double p);
 
-double bound(double val, double min, double max);
 double gauss(void);
 
-int rand_int(int min, int max);
+int rand_integer(int min, int max);
 
 int binomial(int n, double p);
 

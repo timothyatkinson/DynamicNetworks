@@ -24,15 +24,6 @@ bool rand_bool(double p){
   return rand_double() <= p;
 }
 
-double bound(double val, double min, double max){
-  while(val < min){
-    val = val + (max - min);
-  }
-  while(val > max){
-    val = val - (max - min);
-  }
-  return val;
-}
 
 /* generate a random value weighted within the normal (gaussian) distribution */
 double gauss(void)
@@ -44,6 +35,17 @@ double gauss(void)
 }
 
 
-int rand_int(int min, int max){
+int rand_integer(int min, int max){
     return (int)round((rand_double() * ((max - 1) - min)) + min);
+}
+
+
+int binomial(int n, double p){
+  int x = 0;
+  for(int i = 0; i < n; i++){
+    if(rand_bool(p)){
+      x++;
+    }
+  }
+  return x;
 }

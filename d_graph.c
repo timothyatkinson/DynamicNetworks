@@ -4,18 +4,6 @@
 #include "mutate_weight.h"
 #include "mutate_edge.h"
 #include "mutate_param.h"
-
-int binomial(int n, double p);
-int binomial(int n, double p){
-  int x = 0;
-  for(int i = 0; i < n; i++){
-    if(rand_bool(p)){
-      x++;
-    }
-  }
-  return x;
-}
-
 void add_H_edge(Graph* g, int source, int target);
 void add_H_edge(Graph* g, int source, int target){
   HostAtom array[2];
@@ -133,9 +121,9 @@ Graph* random_d_graph(int inputs, int n, double p_H, double p_T)
      array[0].type = 's';
      array[0].str = "Node";
      array[1].type = 'i';
-     array[1].num = rand_int(-1000, 1000);
+     array[1].num = rand_integer(-1000, 1000);
      array[2].type = 'i';
-     array[2].num = rand_int(-1000, 1000);
+     array[2].num = rand_integer(-1000, 1000);
      HostList *list = makeHostList(array, 3, false);
      label = makeHostLabel(0, 3, list);
      node_map[i] = addNode(random_d_graph, 0, label);

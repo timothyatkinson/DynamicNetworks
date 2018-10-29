@@ -3,6 +3,7 @@
 #include "graphStacks.h"
 #include "parser.h"
 #include "morphism.h"
+#include "common.h"
 
 bool matchmutate_param_param2(Morphism *morphism);
 
