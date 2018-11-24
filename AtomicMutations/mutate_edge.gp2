@@ -1,0 +1,191 @@
+Main = try (g_uniform:[pickEdge, pickLoop]; if loop then g_uniform:[mutateLoopSource, mutateLoopTarget] else  g_uniform:[mutateEdgeSource, mutateEdgeTarget, mutateEdgeSourceLoop, mutateEdgeTargetLoop])
+
+
+pickEdge
+(
+  a, b, c : list
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+=>
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#blue)
+]
+interface = {
+  n0, n1
+}
+
+pickLoop
+(
+  a, b : list
+)
+[
+  (n0, a)
+  |
+  (e0, n0, n0, b)
+]
+=>
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#blue)
+]
+interface = {
+  n0
+}
+
+loop
+(
+  a, b : list
+)
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#blue)
+]
+=>
+[
+  (n0(R), a)
+  |
+  (e0, n0, n0, b#blue)
+]
+interface = {
+  n0
+}
+
+mutateLoopSource
+(
+  a, b, c : list
+)
+[
+  (n0(R), a)
+  (n1, "Node":b)
+  |
+  (e0, n0, n0, c#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, "Node":b)
+  |
+  (e0, n1, n0, c)
+]
+interface = {
+  n0, n1
+}
+
+mutateLoopTarget
+(
+  a, b, c : list
+)
+[
+  (n0(R), a)
+  (n1, b)
+  |
+  (e0, n0, n0, c#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+interface = {
+  n0, n1
+}
+
+mutateEdgeSource
+(
+  a, b, c, d : list
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  (n2, "Node":c)
+  |
+  (e0, n0, n1, d#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  (n2, "Node":c)
+  |
+  (e0, n2, n1, d)
+]
+interface = {
+  n0, n1, n2
+}
+
+mutateEdgeTarget
+(
+  a, b, c, d : list
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  (n2, c)
+  |
+  (e0, n0, n1, d#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  (n2, c)
+  |
+  (e0, n0, n2, d)
+]
+interface = {
+  n0, n1, n2
+}
+
+mutateEdgeSourceLoop
+(
+  a, b, c : list
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n0, c)
+]
+interface = {
+  n0, n1
+}
+
+mutateEdgeTargetLoop
+(
+  a, b, c : list
+)
+[
+  (n0(R), a)
+  (n1(R), b)
+  |
+  (e0, n0, n1, c#blue)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n1, n1, c)
+]
+interface = {
+  n0, n1
+}

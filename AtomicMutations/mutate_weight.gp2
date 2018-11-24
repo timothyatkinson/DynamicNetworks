@@ -1,0 +1,45 @@
+Main = try ([mutateLoopWeight, mutateEdgeWeight])
+
+mutateLoopWeight
+(
+  a : list;
+  s : string;
+  x : int
+)
+[
+  (n0, a)
+  |
+  (e0, n0, n0, s : x)
+]
+=>
+[
+  (n0, a)
+  |
+  (e0, n0, n0, s : x + rand_int(-20, 20))
+]
+interface = {
+  n0
+}
+
+mutateEdgeWeight
+(
+  a, b : list;
+  s : string;
+  x : int
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, s : x)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, s : x + rand_int(-20, 20))
+]
+interface = {
+  n1
+}

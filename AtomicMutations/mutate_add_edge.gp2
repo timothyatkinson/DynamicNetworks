@@ -1,0 +1,77 @@
+Main = g_uniform:[add_edge_H, add_edge_T, add_loop_H, add_loop_T]
+
+add_edge_H
+(
+  a, b : list
+)
+[
+  (n0, "Node":a)
+  (n1, b)
+  |
+]
+=>
+[
+  (n0, "Node":a)
+  (n1, b)
+  |
+  (e0, n0, n1, "H":rand_int(-1000, 1000))
+]
+interface = {
+  n0, n1
+}
+
+add_edge_T
+(
+  a, b : list
+)
+[
+  (n0, "Node":a)
+  (n1, b)
+  |
+]
+=>
+[
+  (n0, "Node":a)
+  (n1, b)
+  |
+  (e0, n0, n1, "T":rand_int(-1000, 1000))
+]
+interface = {
+  n0, n1
+}
+
+add_loop_H
+(
+  a : list
+)
+[
+  (n0, "Node":a)
+  |
+]
+=>
+[
+  (n0, "Node":a)
+  |
+  (e0, n0, n0, "H":rand_int(-1000, 1000))
+]
+interface = {
+  n0
+}
+
+add_loop_T
+(
+  a : list
+)
+[
+  (n0, "Node":a)
+  |
+]
+=>
+[
+  (n0, "Node":a)
+  |
+  (e0, n0, n0, "T":rand_int(-1000, 1000))
+]
+interface = {
+  n0
+}

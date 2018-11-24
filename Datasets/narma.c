@@ -17,7 +17,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       x_train[i] = 0;
     }
     else{
-      x_train[i] = rand_range(i_min, i_max);
+      x_train[i] = random_range(i_min, i_max);
       x_train_sum += x_train[i];
     }
 
@@ -45,8 +45,8 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       ut = 0.0;
     }
     double ut9;
-    if(i - 10 > 0){
-      ut9 = x_train[i - 10];
+    if(i - n > 0){
+      ut9 = x_train[i - n];
     }
     else{
       ut9 = 0.0;
@@ -74,7 +74,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       x_validation[i] = 0;
     }
     else{
-      x_validation[i] = rand_range(i_min, i_max);
+      x_validation[i] = random_range(i_min, i_max);
       x_validation_sum += x_validation[i];
     }
 
@@ -102,8 +102,8 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       ut = 0.0;
     }
     double ut9;
-    if(i - 10 > 0){
-      ut9 = x_validation[i - 10];
+    if(i - n > 0){
+      ut9 = x_validation[i - n];
     }
     else{
       ut9 = 0.0;
@@ -131,7 +131,7 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       x_test[i] = 0;
     }
     else{
-      x_test[i] = rand_range(i_min, i_max);
+      x_test[i] = random_range(i_min, i_max);
       x_test_sum += x_test[i];
     }
 
@@ -159,8 +159,8 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
       ut = 0.0;
     }
     double ut9;
-    if(i - 10 > 0){
-      ut9 = x_test[i - 10];
+    if(i - n > 0){
+      ut9 = x_test[i - n];
     }
     else{
       ut9 = 0.0;
@@ -188,25 +188,25 @@ dataset* NARMA(int n, int warmup, int train_length, int validation_length, int t
   data->train_output = gsl_matrix_calloc(1, train_length);
   for(int i = 0; i < train_length; i++){
     data->train_input_sequence[i] = gsl_matrix_calloc(2, 1);
-    gsl_matrix_set(data->train_input_sequence[i], 0, 0, x_train[i + warmup]);
+    gsl_matrix_set(data->train_input_sequence[i], 0, 0, (2 * x_train[i + warmup]) - 0.5);
     gsl_matrix_set(data->train_input_sequence[i], 1, 0, 1.0);
-    gsl_matrix_set(data->train_output, 0, i, y_train[i + warmup]);
+    gsl_matrix_set(data->train_output, 0, i, (2 * y_train[i + warmup]) - 0.5);
   }
 
   data->validation_output = gsl_matrix_calloc(1, validation_length);
   for(int i = 0; i < validation_length; i++){
     data->validation_input_sequence[i] = gsl_matrix_calloc(2, 1);
-    gsl_matrix_set(data->validation_input_sequence[i], 0, 0, x_validation[i + warmup]);
+    gsl_matrix_set(data->validation_input_sequence[i], 0, 0, (2 * x_validation[i + warmup]) - 0.5);
     gsl_matrix_set(data->validation_input_sequence[i], 1, 0, 1.0);
-    gsl_matrix_set(data->validation_output, 0, i, y_validation[i + warmup]);
+    gsl_matrix_set(data->validation_output, 0, i, (2 * y_validation[i + warmup]) - 0.5);
   }
 
   data->test_output = gsl_matrix_calloc(1, test_length);
   for(int i = 0; i < test_length; i++){
     data->test_input_sequence[i] = gsl_matrix_calloc(2, 1);
-    gsl_matrix_set(data->test_input_sequence[i], 0, 0, x_test[i + warmup]);
+    gsl_matrix_set(data->test_input_sequence[i], 0, 0, (2 * x_test[i + warmup]) - 0.5);
     gsl_matrix_set(data->test_input_sequence[i], 1, 0, 1.0);
-    gsl_matrix_set(data->test_output, 0, i, y_test[i + warmup]);
+    gsl_matrix_set(data->test_output, 0, i, (2 * y_test[i + warmup]) - 0.5);
   }
 
 

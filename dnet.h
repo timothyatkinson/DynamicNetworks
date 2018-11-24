@@ -24,8 +24,9 @@ typedef struct dnet{
   double global_leak_rate;
 } dnet;
 
-dnet* rand_dnet(int inputs, int nodes, bool global_leak);
-
+dnet* rand_dnet(int inputs, int nodes, bool global_leak, bool biased);
+dnet* rand_linet(int inputs, int nodes, double sparsity);
+dnet* rand_esn(int inputs, int nodes);
 dnet* make_dnet(int inputs, int nodes, gsl_matrix* W_In_H, gsl_matrix* W_In_T, gsl_matrix* W_Internal_H, gsl_matrix* W_Internal_T);
 
 void free_dnet(dnet* dn);
@@ -33,7 +34,9 @@ void free_dnet(dnet* dn);
 void warmup_dnet(dnet* dn, int warmups);
 
 gsl_matrix* execute_dnet_sequentially(dnet* dn, gsl_matrix** input_sequence, int input_sequence_length, int warmups);
-
+gsl_matrix* execute_dnet_batch(dnet* dn, gsl_matrix** input_sequence, int input_sequence_length, int warmups);
 gsl_matrix* get_output(dnet* dn, gsl_matrix** input_sequence, int input_sequence_length, int warmups, int output_type);
+gsl_matrix* get_output_batch(dnet* dn, gsl_matrix** input_sequence, int input_sequence_length, int warmups, int output_type);
 
+bool strongly_connected(dnet* dn);
 #endif

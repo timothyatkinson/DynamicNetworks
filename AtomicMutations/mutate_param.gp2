@@ -1,0 +1,36 @@
+Main = g_uniform:[mutateParam, mutateLeakRate]
+
+mutateParam
+(
+  x : int;
+  s : string
+)
+[
+  (n0, s:x#red)
+  |
+]
+=>
+[
+  (n0, s:bound(x + rand_int(-20, 20), -1000, 1000)#red)
+  |
+]
+interface = {
+  n0
+}
+
+mutateLeakRate
+(
+  x : int
+)
+[
+  (n0, "Leak_Rate":x#red)
+  |
+]
+=>
+[
+  (n0, "Leak_Rate":bound(x + rand_int(-20, 20), 0, 1000)#red)
+  |
+]
+interface = {
+  n0
+}

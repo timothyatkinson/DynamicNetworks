@@ -23,5 +23,5 @@ typedef struct dataset{
 dataset* alloc_dataset();
 
 void free_dataset();
-
+dataset* load_data_set(char* train_file, char* validation_file, char* test_file, int inputs, int outputs, int train_rows, int validation_rows, int test_rows, int warmups);
 #endif

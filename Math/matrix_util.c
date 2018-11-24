@@ -1,4 +1,7 @@
 #include "matrix_util.h"
+#include <stdbool.h>
+#include <gsl/gsl_complex.h>
+#include <gsl/gsl_errno.h>
 
 /**print_matrix - PRINT MATRIX
   *Prints a gsl_matrix.
@@ -9,7 +12,7 @@ void print_matrix(const gsl_matrix *m) {
 
 	for (i = 0; i < m->size1; i++) {
 		for (j = 0; j < m->size2; j++) {
-			if(j < 10){
+			if(j < 20){
 				printf("%f\t", gsl_matrix_get(m, i, j));
 			}
 		}
@@ -179,16 +182,45 @@ gsl_matrix* gsl_matrix_pinv(gsl_matrix* a, double rcond){
 	return pinv;
 }
 
+double complex_abs(gsl_complex a);
+double complex_abs(gsl_complex a){
+	return sqrt((GSL_REAL(a) * GSL_REAL(a)) + (GSL_IMAG(a) * GSL_IMAG(a)));
+}
+
 /** gsl_matrix_eigenvalues - GSL MATRIX EIGENVALUES
 	* A non-destructive computation of a matrix's eigenvalues using gsl_eigen_symm.
 		* a. The matrix to get the eigenvalues of.
 */
 gsl_vector* gsl_matrix_eigen_values(gsl_matrix* a){
-	gsl_vector* k = gsl_vector_alloc(a->size1);
-	gsl_eigen_symm_workspace* w = gsl_eigen_symm_alloc(a->size1);
-	gsl_eigen_symm(a, k, w);
-	gsl_eigen_symm_free(w);
-	return k;
+
+	bool symm = true;
+	for(int i = 0; i < a->size1; i++){
+		for(int j = 0; j < a->size2; j++){
+			if(gsl_matrix_get(a, i, j) != gsl_matrix_get(a, j, i)){
+				symm = false;
+			}
+		}
+	}
+
+	if(symm){
+		gsl_vector* k = gsl_vector_calloc(a->size1);
+		gsl_eigen_symm_workspace* w = gsl_eigen_symm_alloc(a->size1);
+		gsl_eigen_symm(a, k, w);
+		gsl_eigen_symm_free(w);
+		return k;
+	}
+	else{
+		gsl_vector_complex* k = gsl_vector_complex_calloc(a->size1);
+		gsl_vector* k2 = gsl_vector_alloc(a->size1);
+		gsl_eigen_nonsymm_workspace* w = gsl_eigen_nonsymm_alloc(a->size1);
+		gsl_eigen_nonsymm(a, k, w);
+		gsl_eigen_nonsymm_free(w);
+		for(int i = 0; i < a->size1; i++){
+			gsl_vector_set(k2, i, complex_abs(gsl_vector_complex_get(k, i)));
+		}
+		gsl_vector_complex_free(k);
+		return k2;
+	}
 }
 
 /** gsl_matrix_max_eigenvalue - GSL MATRIX MAX EIGENVALUE
@@ -196,7 +228,9 @@ gsl_vector* gsl_matrix_eigen_values(gsl_matrix* a){
 		* a. The matrix to get the maximum eigenvalue of.
 */
 double gsl_matrix_max_eigenvalue(gsl_matrix* a){
+	gsl_set_error_handler_off();
 	gsl_vector* eigen = gsl_matrix_eigen_values(a);
+	gsl_set_error_handler(NULL);
 	double max = abs(gsl_vector_get(eigen, 0));
 	for(int i = 1; i < a->size1; i++){
 		if(abs(gsl_vector_get(eigen, i)) > max){

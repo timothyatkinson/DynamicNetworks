@@ -1,0 +1,48 @@
+Main = [pickNode]; [mutateHBias, mutateTBias]
+
+pickNode
+(
+  a : list
+)
+[
+  (n0, "Node":a)
+  |
+]
+=>
+[
+  (n0(R), "Node":a)
+  |
+]
+interface = {
+  n0
+}
+
+mutateHBias
+(
+  x, y : int
+)
+[
+  (n0(R), "Node":x:y)
+  |
+]
+=>
+[
+  (n0, "Node":x + rand_int(-20, 20):y)
+  |
+]
+interface = { n0 }
+
+mutateTBias
+(
+  x, y : int
+)
+[
+  (n0(R), "Node":x:y)
+  |
+]
+=>
+[
+  (n0, "Node":x:y + rand_int(-20, 20))
+  |
+]
+interface = { n0 }

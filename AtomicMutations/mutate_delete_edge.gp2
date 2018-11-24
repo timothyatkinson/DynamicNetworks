@@ -1,0 +1,39 @@
+Main = try g_uniform:[deleteEdge, deleteLoop]
+
+deleteEdge
+(
+  a, b, c : list
+)
+[
+  (n0, a)
+  (n1, b)
+  |
+  (e0, n0, n1, c)
+]
+=>
+[
+  (n0, a)
+  (n1, b)
+  |
+]
+interface = {
+  n0, n1
+}
+
+deleteLoop
+(
+  a, b : list
+)
+[
+  (n0, a)
+  |
+  (e0, n0, n0, b)
+]
+=>
+[
+  (n0, a)
+  |
+]
+interface = {
+  n0
+}
